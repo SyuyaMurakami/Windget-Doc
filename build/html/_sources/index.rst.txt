@@ -4,295 +4,67 @@
 .. toctree::
    :hidden:
 
-   Home page <self>
+   主页 <self>
    modules.rst
+   GetFunctionSet.rst
+   FunctionSuffix.rst
+   WithRiskQuantLib.rst
+   WithPycharm.rst
 
-Welcome to Use RiskQuantLib
+欢迎使用windget
 ===========================
 
-RiskQuantLib is a derivative of Quantlib, a famous quantitative library of financial engineering. Unlike QuantLib, however, RiskQuantLib is a scaffolding of financial analysis. RiskQuantLib provides default class of financial instruments and allows you to create new classes you want automatically, given the inheritance rules and other information. It also provides automation building tools to add attributes to classes automatically.
+windget是一个三方开发的万得python接口，它使得用户可以以更为方便的方式从万得获取数据。windget也集成于RiskQuantLib中。
 
-Why Should I Use RiskQuantLib?
+使用windget的有效方法是使用windget的pycharm插件。使用pip安装了windget之后，您可以在pycharm的插件市场搜索并安装windget，此插件会为您提供实时的代码补全和中文字段提示。
+
+
+为什么我应该使用windget?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* RiskQuantLib provides with convenient way of object oriented coding in fields of finance.
-* RiskQuantLib is designed on the base of QuantLib, you can use the functions of QuantLib and combine it with RiskQuantLib easily.
-* RiskQuantLib is a scaffolding, which means it creates an independent project for every mission. After creation, RiskQuantLib will be a part of your code. You have full access to your project and can change any source code of RiskQuantLib.
-* RiskQuantLib is suitable for applying to different markets, since all financial instruments are defined by your self.
-* RiskQuantLib allows you to seperate data analysis process. With RiskQuantLib, data storage, data input, data analysis, data output can be operated independently from each other. You don't have to wait for data input to analysis your data, instead of that, starting coding the analysis logic part before you know the data patterns.
-* RiskQuantLib provides template management function. You can code a template of any mission, such as stock return analysis, and save this template into RiskQuantLib, or share it with other users. Next time you meet with a similar data process problem, you can start a new RiskQuantLib project based on this template.
+万得默认的python数据接口使用w.set, w.wss, w.wsd等函数向用户提供数据服务，但用户必须依赖万得的桌面终端中的代码生成器来寻找字段的名称，这非常不便。比如当用户需要下载某股票过去几年的每日涨跌时，需要先打开万得终端的代码生成器，找到涨跌对应的字段名为 **pct_chg** 而不是 **percentage_change**，然后再使用函数接口。当用户需要频繁获取字段时，这变得非常繁琐。
 
-Who Can Use RiskQuantLib?
+本库提供了通过名称直接检索函数的功能，使得用户不必使用代码生成器就可以快速找到想要的万得函数。在上面的例子中，只需要使用：
+::
+
+   from windget import *  
+   getPctChg("000001.SZ","tradeDate=20200519")
+
+本库将万得提供的所有字段都进行了重构，使得每个字段都有对应的函数，用户可以通过字段来获得函数。这样的函数集合被称为get函数族，其中的每个函数都以get开头，紧接字段的英文名称。当用户模糊输入英文名称时，诸如pycharm这样的IDE会自动补全其余的部分，大大加快用户的编码速度。
+
+本库同时提供了可迭代对象的支持，任何的可迭代对象都可以作为证券代码的传入载体。同时，本库默认返回pandas.DataFrame，方便用户进行后续的数据处理。例如上面的例子中，可以使用列表传入多个证券：
+::
+
+   getPctChg(["000001.SZ","000004.SZ"],"tradeDate=20200519")
+
+用户也可以通过中文来索引想要的万得函数，如果您是RiskQuantLib的用户，在工程项目的pycharm中同时按住Alt，Shift，以及F，可以打开文本搜索，在其中键入想要的字段的名称，就可以快速看到本库提供的所有相关函数的名称。
+
+**注意：如果你安装了搜狗输入法，那么搜狗输入法会屏蔽Alt，Shift，以及F，搜狗将其定义为了其他功能，你需要先进入搜狗输入法的设置，快捷键，来关闭这一项。**
+
+如果您不是RiskQuantLib的用户，您可以考虑使用pycharm插件仓库中名为windget的插件，此插件提供了自动的代码补全和中文提示，帮您快速索引万得函数。
+
+你也可以访问 `RiskQuantLib文档 <https://riskquantlib-doc.readthedocs.io/zh_CN/latest/>`_ 来获取更多关于RiskQuantLib的信息。
+
+谁应该使用windget?
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-RiskQuantLib is designed to allow analyst to code easily, it's recommanded to be used by financial analyst, students in business school or quant-traders. It's very useful when dealing with analysis of multiple kinds of financial instruments.
+windget被设计用于从万得数据接口中获取数据，如果您是金融从业人员，金融或经济系的学生或教职工，或者有意探索万得的python数据接口，那么您都可以使用windget。
 
-**Notice: RiskQuantLib is not designed to dealing with heavy data prcoess mission. RiskQuantLib sacrifice memory and speed to accelerate coding.**
+**注意：windget封装了大部分的万得python接口，但依然不是全部。有部分函数可能无法在windget中找到，但这样的函数应该非常少。**
 
-Slow Start
+快速开始
 ^^^^^^^^^^^
 
-Suppose you are employeed by a bank. One day, your bose calls you to his office, he tells you your company want to invest in a new family fund, Archegos, we suppose it is. Your mission, if you accept, is to tell your boss how risky this deal is.
-
- `Take adventure after second thought, this is far from recklessness.`
-
-After some investigation, you find some data from Bloomberg, however, it only tells you about some stock holdings of the whole fund, like Tencent or Alibaba, etc. The first dataframe you have is like this:
-
-+------------+--------------------+------------------+
-| Index      | Holding Mkt Value  | Stock            |
-+============+====================+==================+
-| 0          |    239018292       | TCEHY US Equity  |
-+------------+--------------------+------------------+
-| 1          |    710281723       | ABC US Equity    |
-+------------+--------------------+------------------+
-| 2          |      7497233       | HIYJ US Equity   |
-+------------+--------------------+------------------+
-| 3          |    179321234       | SPACEX US Equity |
-+------------+--------------------+------------------+
-| 4          |        83249       | HE US Equity     |
-+------------+--------------------+------------------+
-
-After this, you decided to download the close price of these stocks over past three years, you get your second dataframe like this:
-
-+------------+-----------------+------------------+-----------------+
-| Date       | HIYJ US Equity  | U7HJ US Equity   |  HE US Equity   |
-+============+=================+==================+=================+
-| 2020-01-01 |       23.9      |       nan        |        9.8      |
-+------------+-----------------+------------------+-----------------+
-| 2020-01-02 |        nan      |      12.8        |        9.5      |
-+------------+-----------------+------------------+-----------------+
-| 2020-01-03 |       21.9      |      13.1        |        9.3      |
-+------------+-----------------+------------------+-----------------+
-| 2020-01-04 |       22.1      |      13.2        |        9.7      |
-+------------+-----------------+------------------+-----------------+
-| 2020-01-05 |       22.4      |      12.9        |        9.8      |
-+------------+-----------------+------------------+-----------------+
-|    ...     |       ...       |      ...         |        ...      |
-+------------+-----------------+------------------+-----------------+
-
-You decide to calculate the volatility of stocks of Archegos holdings. So you start coding like:
+使用pip命令安装windget库：
 ::
 
-   df_stock_holding = pd.read_excel(path_one)
-   df_stock_close = pd.read_excel(path_two)
+   pip install windget
 
-If you don't use RiskQuantLib, you may do it like:
+如果您是pycharm的用户，您可以从pycharm的插件仓库中搜索并下载windget同名插件，此插件提供自动的代码补全，可以方便用户在pycharm中进行快速函数索引，而不必打开万得的代码生成器。打开pycharm插件仓库的方式为： **File-Settings-Plugins-Marketplace**
+
+当安装好windget后，在python源代码中导入windget：
 ::
 
-   df_std = df_stock_close.std()
-   std_of_archegos_stock_holdings = df_std[df_stock_holding.columns.to_list()]
+   from windget import *
 
-Now you are satisfied with what you have done, it seems the risk of stocks can be revealed, at least to some extend. In the afternoon, your boss tells you that he knows Archegos holds two famous fund, called H and JK. He says this is a material non-public information, you may not find net asset value of these two funds by yourself, luckily, your boss has his own way. He gives you the data, which is the third dataframe and it looks like:
-
-+------------+--------------------+------------------+
-| Index      |   Net Asset Value  |    Fund          |
-+============+====================+==================+
-| 0          |        2.39        |         H        |
-+------------+--------------------+------------------+
-| 1          |        7.22        |        JK        |
-+------------+--------------------+------------------+
-| 2          |        0.98        |       UIH        |
-+------------+--------------------+------------------+
-| ...        |         ...        |       ...        |
-+------------+--------------------+------------------+
-
-Archegos holding shares of these funds are the fourth dataframe, which looks like:
-
-+------------+--------------------+------------------+
-| Index      | Holding Shares     | Fund             |
-+============+====================+==================+
-| 0          |      20000000      | H                |
-+------------+--------------------+------------------+
-| 1          |      45000000      | JK               |
-+------------+--------------------+------------------+
-| ...        |         ...        |       ...        |
-+------------+--------------------+------------------+
-
-Your colleague who used to finish a project, focusing on the historical NAV extreme dropdown of all mutual funds, and he tells you that you can use 1.5% as a one-day 99% VaR. So you calculate risk indicator by:
-::
-
-   df_fund_holding = pd.read_excel(path_four)
-   df_fund_nav = pd.read_excel(path_three)
-
-   df_fund = pd.merge(df_fund_holding, df_fund_nav, on = 'Fund', how = 'left')
-   df_fund['Total Holding'] = df_fund['Holding Shares'] * df_fund['Net Asset Value']
-   df_fund['VaR'] = df_fund['Total Holding'] * 0.015
-
-Now you have used all kinds of information you can get, since Archegos barely publish their holdings. You give your boss the analysis result and waiting to be praised. However, your boss is pissed off. He takes a long time to calm down and tells you that you forget sever important things:
-
-
-* `The price of stock contains nan, you have to deal with it. And don't fill nan with last non-nan value, because this will lead to a smaller std than true value.`
-* `He wants a conclusion of risk of Archegos, not all kinds of risk indicators.`
-* `The stock price you used is wrong, cause it is a divident-included price.`
-* `The only reason Archegos buys these two funds is that Archegos can use it as a bridge to buy more shares of stocks, like TCEHY US Equity, this is a trick to use leverage. So you have to take a closer look, dig down to the holdings of these two funds.`
-
-Things get to complicated now. You decide to use RiskQuantLib. First of all, you make a dictionary to hold this analysis project, named 'Archegos_Risk'. Then you open a command terminal, and create a RiskQuantLib project by:
-::
-
-   newRQL Archegos_Risk
-
-After this, the dictionary looks like:
-::
-
-   --Archegos_Risk
-     --RiskQuantLib
-     --build.py
-     --main.py
-     --Build_Attr.xlsx
-     --Build_Instrument.xlsx
-
-Open ``Build_Attr.xlsx``, you edit it and make it looks like:
-
-+--------------+----------------+----------------+
-| SecurityType |    AttrName    |    AttrType    |
-+==============+================+================+
-|     Fund     | netAssetValue  |     Number     |
-+--------------+----------------+----------------+
-|     Fund     |        amount  |     Number     |
-+--------------+----------------+----------------+
-|     Fund     | varPercentage  |     Number     |
-+--------------+----------------+----------------+
-|    Stock     |      mktValue  |     Number     |
-+--------------+----------------+----------------+
-|    Stock     |   closeSeries  |     Series     |
-+--------------+----------------+----------------+
-
-You close this file and build this project in command terminal:
-::
-
-   python build.py
-
-After this, you open ``RiskQuantLib.Security.Fund.fund`` to add class function:
-::
-
-   def calVaR(self):
-      self.VaR = self.netAssetValue * self.amount * self.varPercentage
-
-You open ``RiskQuantLib.Security.Stock.stock`` to add class function:
-::
-
-   def calVaRPercentage(self):
-      from RiskQuantLib.Tool.mathTool import percentageOfSeries
-      self.varPercentage = percentageOfSeries(self.closeSeries.dropna().values(),99)
-
-   def calVaR(self):
-      self.VaR = self.mktValue * self.varPercentage
-
-**Notice: All these coding are done before you input your data.**
-
-Turn into root path of this project and open ``main.py``, we start analysis:
-::
-
-   from RiskQuantLib.Module import *
-
-   # Read files
-   df_stock_holding = pd.read_excel(path_one)
-   df_stock_close = pd.read_excel(path_two)
-   df_fund_holding = pd.read_excel(path_four)
-   df_fund_nav = pd.read_excel(path_three)
-
-   # Initialize RQL list object
-   fund_holdings = fundList()
-   stock_holdings = stockList()
-
-   # Add securities to list
-   fund_holdings.addFundSeries(df_fund_holding['Fund'],df_fund_holding['Fund'])
-   stock_holdings.addStockSeries(df_stock_holding['Stock'],df_stock_holding['Stock'])
-
-   # Set input
-   fund_holdings.setNetAssetValue(df_fund_nav['Fund'],df_fund_nav['Net Asset Value'])
-   fund_holdings.setAmount(df_fund_holding['Fund'],df_fund_holding['Holding Shares'])
-   stock_holdings.setMktValue(df_stock_holding['Stock'],df_stock_holding['Holding Mkt Value'])
-   stock_holdings.setCloseSeries(df_stock_close)
-   [fund.setVarPercentage(0.15) for fund in fund_holdings]
-
-   # Calculation
-   fund_holdings.execFunc('calVaR')
-   stock_holdings.execFunc('calVaRPercentage')
-   stock_holdings.execFunc('calVaR')
-
-Now it's more easy to read and modify, isn't it? You decide to continue and save your result into excel, so you code:
-::
-   
-   # Data output
-   result = stock_holdings + fund_holdings
-   df_result = pd.DataFrame(result[['code','VaR']])
-   df_result.to_excel(path)
-
-Till now, the process looks more complicated than a pandas way, however, if you noticed, with RiskQuantLib, data input, data process, data output is independent, change to any of them won't influence the others. Let's take a closer look:
-
-*Data Input*:
-
-``main.py``:
-::
-
-   from RiskQuantLib.Module import *
-
-   # Read files
-   df_stock_holding = pd.read_excel(path_one)
-   df_stock_close = pd.read_excel(path_two)
-   df_fund_holding = pd.read_excel(path_four)
-   df_fund_nav = pd.read_excel(path_three)
-
-   # Initialize RQL list object
-   fund_holdings = fundList()
-   stock_holdings = stockList()
-
-   # Add securities to list
-   fund_holdings.addFundSeries(df_fund_holding['Fund'],df_fund_holding['Fund'])
-   stock_holdings.addStockSeries(df_stock_holding['Stock'],df_stock_holding['Stock'])
-
-   # Set input
-   fund_holdings.setNetAssetValue(df_fund_nav['Fund'],df_fund_nav['Net Asset Value'])
-   fund_holdings.setAmount(df_fund_holding['Fund'],df_fund_holding['Holding Shares'])
-   stock_holdings.setMktValue(df_stock_holding['Stock'],df_stock_holding['Holding Mkt Value'])
-   stock_holdings.setCloseSeries(df_stock_close)
-   [fund.setVarPercentage(0.15) for fund in fund_holdings]
-
-*Data Analysis*
-
-``RiskQuantLib.Security.Fund.fund``:
-::
-
-   def calVaR(self):
-      self.VaR = self.netAssetValue * self.amount * self.varPercentage
-
-``RiskQuantLib.Security.Stock.stock``
-::
-
-   def calVaRPercentage(self):
-      from RiskQuantLib.Tool.mathTool import percentageOfSeries
-      self.varPercentage = percentageOfSeries(self.closeSeries.dropna().values(),99)
-
-   def calVaR(self):
-      self.VaR = self.mktValue * self.varPercentage
-
-``main.py``
-::
-
-   # Calculation
-   fund_holdings.execFunc('calVaR')
-   stock_holdings.execFunc('calVaRPercentage')
-   stock_holdings.execFunc('calVaR')
-
-*Data Output*
-
-``main.py``
-::
-
-   # Data output
-   result = stock_holdings + fund_holdings
-   df_result = pd.DataFrame(result[['code','VaR']])
-   df_result.to_excel(path)
-
-After all these are done, you can save this project as a template by using terminal command:
-::
-
-   saveRQL Archegos_Risk
-
-Next time your boss wants you to analysis another fund, you may start a RiskQuantLib project by calling:
-::
-
-   tplRQL Archegos_Risk target_path
-
-This is a simple introduction to RiskQuantLib, about how to *start a project*, *start coding with build*, *seperate stages of analysis*, *save project as template* and *use it again*. You may noticed that we have not solved all problems that boss gave to us. More functions can be used to do this. You can refer to RiskQuantLib Class Details for further information.
+然后当您输入任何以get开头的关键字时，pycharm插件会自动联想字段，帮您选择您可能需要的函数。您也可以记住自己的常用函数。
