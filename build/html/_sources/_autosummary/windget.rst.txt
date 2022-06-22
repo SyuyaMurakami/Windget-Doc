@@ -1,0 +1,6 @@
+﻿windget
+=======
+
+.. currentmodule:: windget
+
+.. automodule:: windget

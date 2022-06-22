@@ -1,0 +1,1120 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>windget.wst &mdash; windget 0.0.1 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/readthedocs-custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> windget
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">windget</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">windget</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">模块代码</a> &raquo;</li>
+        
+      <li>windget.wst</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>windget.wst 源代码</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># coding = utf-8</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">WindPy</span> <span class="kn">import</span> <span class="n">w</span>
+<div class="viewcode-block" id="convertInputSecurityTypeForWst"><a class="viewcode-back" href="../../windget.html#windget.wst.convertInputSecurityTypeForWst">[文档]</a><span class="k">def</span> <span class="nf">convertInputSecurityTypeForWst</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">convertedFunc</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">i</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;strftime&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">args</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">==</span><span class="nb">type</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">security</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">security</span><span class="p">),</span><span class="o">*</span><span class="n">args</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">convertedFunc</span></div>
+<div class="viewcode-block" id="getPreCloseWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getPreCloseWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getPreCloseWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取前收盘价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;pre_close&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getOpenWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getOpenWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getOpenWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取开盘价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;open&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getHighWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getHighWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getHighWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取最高价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;high&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getLowWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getLowWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getLowWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取最低价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;low&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getLastWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getLastWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getLastWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取最新价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;last&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAskWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAskWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAskWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;ask&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBidWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBidWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBidWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bid&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getVolumeWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getVolumeWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getVolumeWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取成交量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;volume&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAmtWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAmtWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAmtWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取成交额日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;amt&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getPreSettleWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getPreSettleWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getPreSettleWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取前结算价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;pre_settle&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getSettleWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getSettleWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getSettleWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取结算价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;settle&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getPreOiWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getPreOiWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getPreOiWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取前持仓量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;pre_oi&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getOiWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getOiWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getOiWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取持仓量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;oi&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getVolRatioWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getVolRatioWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getVolRatioWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取量比日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;vol_ratio&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAfterPriceWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAfterPriceWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAfterPriceWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取盘后最新成交价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;afterprice&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAfterVolumeWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAfterVolumeWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAfterVolumeWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取盘后成交量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;aftervolume&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAfterTurnoverWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAfterTurnoverWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAfterTurnoverWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取盘后成交额日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;afterturnover&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAsk10Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAsk10Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAsk10Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖10价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;ask10&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAsk9Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAsk9Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAsk9Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖9价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;ask9&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAsk8Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAsk8Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAsk8Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖8价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;ask8&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAsk7Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAsk7Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAsk7Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖7价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;ask7&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAsk6Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAsk6Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAsk6Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖6价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;ask6&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAsk5Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAsk5Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAsk5Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖5价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;ask5&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAsk4Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAsk4Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAsk4Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖4价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;ask4&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAsk3Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAsk3Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAsk3Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖3价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;ask3&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAsk2Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAsk2Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAsk2Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖2价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;ask2&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getAsk1Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getAsk1Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getAsk1Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖1价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;ask1&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBid1Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBid1Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBid1Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买1价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bid1&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBid2Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBid2Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBid2Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买2价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bid2&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBid3Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBid3Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBid3Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买3价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bid3&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBid4Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBid4Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBid4Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买4价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bid4&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBid8Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBid8Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBid8Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买8价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bid8&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBid9Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBid9Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBid9Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买9价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bid9&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBid10Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBid10Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBid10Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买10价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bid10&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getASize10Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getASize10Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getASize10Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖10量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;asize10&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getASize9Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getASize9Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getASize9Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖9量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;asize9&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getASize8Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getASize8Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getASize8Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖8量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;asize8&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getASize7Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getASize7Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getASize7Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖7量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;asize7&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getASize6Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getASize6Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getASize6Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖6量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;asize6&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getASize5Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getASize5Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getASize5Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖5量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;asize5&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getASize4Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getASize4Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getASize4Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖4量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;asize4&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getASize3Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getASize3Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getASize3Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖3量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;asize3&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getASize2Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getASize2Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getASize2Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖2量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;asize2&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getASize1Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getASize1Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getASize1Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取卖1量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;asize1&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBSize1Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBSize1Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBSize1Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买1量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bsize1&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBSize2Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBSize2Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBSize2Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买2量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bsize2&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBSize3Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBSize3Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBSize3Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买3量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bsize3&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBSize4Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBSize4Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBSize4Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买4量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bsize4&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBSize5Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBSize5Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBSize5Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买5量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bsize5&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBSize6Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBSize6Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBSize6Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买6量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bsize6&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBSize7Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBSize7Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBSize7Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买7量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bsize7&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBSize8Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBSize8Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBSize8Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买8量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bsize8&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBSize9Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBSize9Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBSize9Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买9量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bsize9&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBSize10Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBSize10Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBSize10Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买10量日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bsize10&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getIoPvWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getIoPvWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getIoPvWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取IOPV日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;iopv&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getLimitUpWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getLimitUpWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getLimitUpWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取涨停价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;limit_up&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getLimitDownWst"><a class="viewcode-back" href="../../windget.html#windget.wst.getLimitDownWst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getLimitDownWst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取跌停价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;limit_down&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBid5Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBid5Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBid5Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买5价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bid5&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBid6Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBid6Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBid6Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买6价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bid6&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="getBid7Wst"><a class="viewcode-back" href="../../windget.html#windget.wst.getBid7Wst">[文档]</a><span class="nd">@convertInputSecurityTypeForWst</span>
+<span class="k">def</span> <span class="nf">getBid7Wst</span><span class="p">(</span><span class="n">security</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	获取买7价日内跳价</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	security : list</span>
+<span class="sd">		The list whose elements are security code.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">wst</span><span class="p">(</span><span class="n">security</span><span class="p">,</span><span class="s2">&quot;bid7&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span><span class="n">usedf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 .
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
