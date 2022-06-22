@@ -8,3 +8,4 @@ jupytext
 jupyter
 numpy
 pandas
+windget
