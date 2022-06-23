@@ -5,7 +5,7 @@
    :hidden:
 
    主页 <self>
-   modules.rst
+   FunctionIndex.rst
    GetFunctionSet.rst
    FunctionSuffix.rst
    WithRiskQuantLib.rst

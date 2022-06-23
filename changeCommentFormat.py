@@ -20,12 +20,12 @@ replaceFunction = [
     lambda x: '''"""\n\t''' + x.group(1) + '''\n\n\tParameters\n\t----------\n\tsecurity : list\n\t\tThe list whose elements are security code.\n\n\tReturns\n\t-------\n\tpd.DataFrame\n\t"""'''
 ]
 for fileName,targetComment in zip(fileList,replaceFunction):
-    with open(path+os.sep+"Windget"+os.sep+fileName,"r",encoding="utf-8") as f:
+    with open(path+os.sep+"windget"+os.sep+fileName,"r",encoding="utf-8") as f:
         content = f.read()
         afterReplaced = replaceComment(content,targetComment)
         fileDict[fileName] = afterReplaced
 for fileName in fileDict:
-    with open(path+os.sep+"Windget"+os.sep+fileName,"w",encoding="utf-8") as f:
+    with open(path+os.sep+"windget"+os.sep+fileName,"w",encoding="utf-8") as f:
         f.write(fileDict[fileName])
 print("注释替换完成")
 
